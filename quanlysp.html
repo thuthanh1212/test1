@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <link a href="ql.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h3>Add New Product</h3>
+        <input type="text" id="newProduct" placeholder="New Product">
+        <button class="add-btn" onclick="addProduct()">Add</button>
+        <h3>Display All Products</h3>
+        <div id="productCount" class="product-count"></div>
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        let products = [
+            "Sony Xperia",
+            "Samsung Galaxy",
+            "Nokia 6",
+            "Xiaomi Redmi Note 4",
+            "Apple iPhone 6S",
+            "Xiaomi Mi 5s Plus",
+            "Apple iPhone 8 Plus",
+            "Fujitsu F-04E",
+            "Oppo A71"
+        ];
+        function displayProducts() {
+            const tableBody = document.querySelector("#productTable tbody");
+            const countDiv = document.getElementById("productCount");
+            tableBody.innerHTML = "";
+
+            products.forEach((product, index) => {
+                const row = `
+          <tr>
+            <td>${product}</td>
+            <td><button class="edit-btn" onclick="editProduct(${index})">Edit</button></td>
+            <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
+          </tr>
+        `;
+                tableBody.innerHTML += row;
+            });
+
+            countDiv.textContent = `${products.length} products`;
+        }
+
+
+        function addProduct() {
+            const newProduct = document.getElementById("newProduct").value.trim();
+            if (newProduct === "") {
+                alert("Vui lòng nhập tên sản phẩm!");
+                return;
+            }
+            products.push(newProduct);
+            document.getElementById("newProduct").value = "";
+            displayProducts();
+            alert("Đã thêm sản phẩm thành công!");
+        }
+
+
+        function editProduct(index) {
+            const newName = prompt("Nhập tên mới cho sản phẩm:", products[index]);
+            if (newName !== null && newName.trim() !== "") {
+                products[index] = newName.trim();
+                displayProducts();
+                alert("Đã cập nhật tên sản phẩm!");
+            }
+        }
+        function deleteProduct(index) {
+            if (confirm(`Bạn có chắc muốn xóa "${products[index]}" không?`)) {
+                products.splice(index, 1);
+                displayProducts();
+                alert("Đã xóa sản phẩm!");
+            }
+        }
+        displayProducts();
+    </script>
+</body>
+
+</html>
